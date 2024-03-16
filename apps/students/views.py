@@ -36,7 +36,6 @@ from django.utils.decorators import method_decorator
 from apps.corecode.views import student_entry_resricted,staff_student_entry_restricted,different_user_restricted
 from django.contrib.auth.decorators import login_required
 
-
 def generate_student_id_card(request,student_id):
         # Create a blank image
     image = Image.new('RGB', (1000, 900), (255, 255, 255))
@@ -48,7 +47,7 @@ def generate_student_id_card(request,student_id):
 
 
     # Use the system font for ImageFont
-    font = ImageFont.truetype('arial.ttf', size=45)
+    font = ImageFont.load_default()
 
 
     d_date = datetime.datetime.now()
@@ -102,7 +101,7 @@ def generate_student_id_card(request,student_id):
 
 
     # Save the edited image
-    image_path = os.path.join(settings.BASE_DIR, "media\\idcards", f"student_id_card_{student_id}.png")
+    image_path = os.path.join(settings.BASE_DIR, "media/idcards", f"student_id_card_{student_id}.png")
     image.save(image_path)
 
     # Generate QR code
@@ -117,7 +116,7 @@ def generate_student_id_card(request,student_id):
     qr.make(fit=True)
     qr_image = qr.make_image(fill_color="black", back_color="white")
 
-    qr_path = os.path.join('media\\qrcodes', f'qr_code{student_id}.png')
+    qr_path = os.path.join('media/qrcodes', f'qr_code{student_id}.png')
     qr_image.save(qr_path)
 
     # Paste QR code onto the ID card
